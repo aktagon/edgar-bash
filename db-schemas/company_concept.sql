@@ -1,0 +1,1 @@
+"CREATE TABLE company_concept(cik BIGINT, taxonomy VARCHAR, tag VARCHAR, ""label"" VARCHAR, description VARCHAR, entityName VARCHAR, units MAP(VARCHAR, STRUCT(""end"" DATE, val BIGINT, accn VARCHAR, fy BIGINT, fp VARCHAR, form VARCHAR, filed DATE, frame VARCHAR)[]));"

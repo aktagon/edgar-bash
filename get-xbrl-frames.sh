@@ -38,14 +38,6 @@ FROM read_json_auto('$JSON', map_inference_threshold=0);
 SQL
 
 echo "3) Dumping schema table..."
-# Export the schema to a file in the schema directory
-run_query <<SQL
-DESCRIBE xbrl_frames;
-.mode list
-.separator |
-.headers off
-.once schema/xbrl_frames
-DESCRIBE xbrl_frames;
-SQL
+export_schema "xbrl_frames"
 
 echo "Done! XBRL frame data for ${TAXONOMY}/${TAG}/${UNIT}/${PERIOD} has been processed"

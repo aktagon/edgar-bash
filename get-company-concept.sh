@@ -34,14 +34,6 @@ FROM read_json_auto('$JSON', map_inference_threshold=0);
 SQL
 
 echo "3) Dumping schema table..."
-# Export the schema to a file in the schema directory
-run_query <<SQL
-DESCRIBE company_concept;
-.mode list
-.separator |
-.headers off
-.once schema/company_concept
-DESCRIBE company_concept;
-SQL
+export_schema "company_concept"
 
 echo "Done! Company concept data for CIK${CIK} ${TAXONOMY}/${CONCEPT} has been processed"

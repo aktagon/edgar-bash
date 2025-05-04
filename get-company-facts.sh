@@ -36,13 +36,6 @@ SQL
 # 3) Dump the schema table
 ###############################################################################
 echo "3) Dumping schema table..."
-run_query <<SQL
-DESCRIBE company_facts;
-.mode list
-.separator |
-.headers off
-.once schema/company_facts
-DESCRIBE company_facts;
-SQL
+export_schema "company_facts"
 
 echo "Done! Company facts data for CIK${CIK} has been processed"

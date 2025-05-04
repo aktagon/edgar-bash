@@ -1,0 +1,1 @@
+"CREATE TABLE xbrl_frames(taxonomy VARCHAR, tag VARCHAR, ccp VARCHAR, uom VARCHAR, ""label"" VARCHAR, description VARCHAR, pts BIGINT, ""data"" STRUCT(accn VARCHAR, cik BIGINT, entityName VARCHAR, loc VARCHAR, ""end"" DATE, val BIGINT)[]);"

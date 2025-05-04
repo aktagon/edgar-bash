@@ -31,14 +31,6 @@ FROM read_json_auto('$JSON', map_inference_threshold=0);
 SQL
 
 echo "3) Dumping schema table..."
-# Export the schema to a file in the schema directory
-run_query <<SQL
-DESCRIBE submissions;
-.mode list
-.separator |
-.headers off
-.once schema/submissions
-DESCRIBE submissions;
-SQL
+export_schema "submissions"
 
 echo "Done! Submissions data for CIK${CIK} has been processed"

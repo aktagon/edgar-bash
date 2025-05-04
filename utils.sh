@@ -135,3 +135,47 @@ run_query() {
     # ---- Execute SQL from stdin ----
     duckdb "$db"
 }
+
+###############################################################################
+# export_schema <table_name> [output_dir]
+# Writes the CREATE TABLE DDL for <table_name> into “db-schemas/<table_name>.sql”.
+#
+# Accepts:
+#   - table_name      – required DuckDB table to be scripted
+#   - output_dir      – optional target directory (default: db-schemas)
+#
+# Uses:
+#   - EDGAR_DB        – path to DuckDB file (default: edgar.db)
+#
+# Exit status:
+#   0  – schema written successfully
+#   2  – usage error (missing argument)
+#   3  – duckdb CLI not found
+###############################################################################
+export_schema() {
+    # ---- Dependency check ----
+    command -v duckdb >/dev/null 2>&1 || { echo "duckdb CLI not on PATH" >&2; return 3; }
+
+    # ---- Parameter check ----
+    if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+        echo "Usage: export_schema <table_name> [output_dir]" >&2
+        return 2
+    fi
+
+    local table="$1"
+    local outdir="${2:-db-schemas}"
+    local db="${EDGAR_DB:-edgar.db}"
+    local outfile="${outdir}/${table}.sql"
+
+    mkdir -p "$outdir"
+
+    # ---- Fetch DDL via PRAGMA and write to file ----
+    duckdb "$db" -noheader -csv -c "SELECT sql FROM sqlite_master WHERE type='table' AND name='${table}';" > "$outfile"
+    if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+        echo "Error: failed to export DDL for '${table}'" >&2
+        return 4
+    fi
+
+    echo "DDL for '${table}' saved to ${outfile}"
+    return 0
+}

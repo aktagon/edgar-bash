@@ -1,0 +1,1 @@
+"CREATE TABLE company_facts(cik BIGINT, entityName VARCHAR, facts MAP(VARCHAR, MAP(VARCHAR, STRUCT(""label"" VARCHAR, description VARCHAR, units MAP(VARCHAR, STRUCT(""end"" DATE, val DOUBLE, accn VARCHAR, fy BIGINT, fp VARCHAR, form VARCHAR, filed DATE, frame VARCHAR, ""start"" DATE)[])))));"

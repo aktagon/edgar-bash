@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-mkdir -p json
+mkdir -p json logs db-schemas json-schemas
 
 # This script runs all data retrieval scripts for a specified CIK
 # with common examples for various data types

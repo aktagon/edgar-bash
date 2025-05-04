@@ -33,7 +33,7 @@ export EDGAR_UA="ACME Corp research bot (contact: data‑team@acme.com)"
 
 ```bash
 # pull everything Apple Inc. has filed and a XBRL frames for all companies
-./get-all.sh 0000320193
+EDGAR_UA="Aktagon Ltd. (contact@aktagon.com)" ./get-all.sh 320193
 
 # inspect data
 duckdb edgar.db
@@ -42,7 +42,9 @@ SELECT * FROM company_facts LIMIT 20;
 
 Output is stored in:
 
-- **json/** – raw API payloads
+- **json/** – raw API responses
+- **json-schemas/** – JSON schemas
+- **db-schemas/** – database schemas
 - **logs/** – curl + DuckDB progress
 - **edgar.db** – local DuckDB with imported tables
 
