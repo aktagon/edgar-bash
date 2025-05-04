@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "$0")/utils.sh"
 
 # Check if CIK parameter was provided
 if [ $# -lt 1 ]; then
@@ -8,20 +9,18 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-# Get CIK from command line argument and pad with zeros if needed
-CIK=$(printf "${1#CIK}")
+CIK="$(pad_cik "$1")"
 
 # Setup variables
 JSON="json/CIK${CIK}.json"
 URL="https://data.sec.gov/submissions/CIK${CIK}.json"
+probe_cacheability $URL
 
 echo "1) Downloading EDGAR Submissions JSON for CIK: ${CIK}..."
-curl -sSL \
-     -H "User-Agent: Your Name (your.email@example.com)" \
-     "$URL" -o "$JSON"
+fetch_edgar_url $URL
 
 echo "2) Querying the submissions data..."
-duckdb edgar.db <<SQL
+run_query <<SQL
 -- Basic entity information
 CREATE TABLE IF NOT EXISTS submissions AS
 SELECT *
@@ -33,7 +32,7 @@ SQL
 
 echo "3) Dumping schema table..."
 # Export the schema to a file in the schema directory
-duckdb edgar.db <<SQL
+run_query <<SQL
 DESCRIBE submissions;
 .mode list
 .separator |

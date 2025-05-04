@@ -1,39 +1,42 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "$0")/utils.sh"
 
 # Check if CIK parameter was provided
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <CIK>"
-    echo "Example: $0 320193"
+    echo "Example: $0 320193    or   $0 0000320193   or   $0 CIK320193"
     exit 1
 fi
 
-# Get CIK from command line argument and pad with zeros if needed
-CIK=$(printf "${1#CIK}")
-
-# Setup variables
+CIK="$(pad_cik "$1")"
 JSON="json/facts_CIK${CIK}.json"
 URL="https://data.sec.gov/api/xbrl/companyfacts/CIK${CIK}.json"
+UA="Your Name (your.email@example.com)"
+
+probe_cacheability $URL
 
 echo "1) Downloading XBRL Company Facts JSON for CIK: ${CIK}..."
-curl -sSL \
-     -H "User-Agent: Your Name (your.email@example.com)" \
-     "$URL" -o "$JSON"
+fetch_edgar_url $URL
 
+###############################################################################
+# Query the company facts data with DuckDB
+###############################################################################
 echo "2) Querying the company facts data..."
-duckdb edgar.db <<SQL
--- Company metadata
+run_query <<SQL
 CREATE TABLE IF NOT EXISTS company_facts AS
 SELECT *
-FROM read_json_auto('$JSON', map_inference_threshold=0) LIMIT 0;
+FROM read_json_auto('${JSON}', map_inference_threshold=0) LIMIT 0;
 INSERT INTO company_facts
 SELECT *
-FROM read_json_auto('$JSON', map_inference_threshold=0);
+FROM read_json_auto('${JSON}', map_inference_threshold=0);
 SQL
 
+###############################################################################
+# 3) Dump the schema table
+###############################################################################
 echo "3) Dumping schema table..."
-# Export the schema to a file in the schema directory
-duckdb edgar.db <<SQL
+run_query <<SQL
 DESCRIBE company_facts;
 .mode list
 .separator |

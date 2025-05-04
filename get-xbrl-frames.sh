@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "$0")/utils.sh"
 
 # Check if parameters were provided
 if [ $# -lt 4 ]; then
@@ -19,13 +20,12 @@ PERIOD="$4"
 JSON="json/${TAXONOMY}_${TAG}_${UNIT}_${PERIOD}.json"
 URL="https://data.sec.gov/api/xbrl/frames/${TAXONOMY}/${TAG}/${UNIT}/${PERIOD}.json"
 
+probe_cacheability $URL
 echo "1) Downloading XBRL Frames JSON for Taxonomy: ${TAXONOMY}, Tag: ${TAG}, Unit: ${UNIT}, Period: ${PERIOD}..."
-curl -sSL \
-     -H "User-Agent: Your Name (your.email@example.com)" \
-     "$URL" -o "$JSON"
+fetch_edgar_url $URL
 
 echo "2) Querying the frames data..."
-duckdb edgar.db <<SQL
+run_query <<SQL
 -- Frame metadata
 CREATE TABLE IF NOT EXISTS xbrl_frames AS
 SELECT
@@ -39,7 +39,7 @@ SQL
 
 echo "3) Dumping schema table..."
 # Export the schema to a file in the schema directory
-duckdb edgar.db <<SQL
+run_query <<SQL
 DESCRIBE xbrl_frames;
 .mode list
 .separator |

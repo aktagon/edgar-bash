@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/us-gaap-assets.json",
+  "title": "XBRL frame <taxonomy> <tag> <unit> <period>. For example, us-gaap/Assets/USD/CY2024Q1I",
+  "type": "object",
+
+  "properties": {
+    "cik": {
+      "type": "integer",
+      "description": "Central Index Key of the registrant (SEC)."
+    },
+    "taxonomy": {
+      "type": "string",
+      "const": "us-gaap",
+      "description": "XBRL taxonomy name."
+    },
+    "tag": {
+      "type": "string",
+      "description": "XBRL tag (concept) name."
+    },
+    "label": {
+      "type": "string",
+      "description": "Human‑readable label for the tag."
+    },
+    "description": {
+      "type": "string",
+      "description": "Long‑form definition of the tag."
+    },
+    "entityName": {
+      "type": "string",
+      "description": "Legal name of the filing entity."
+    },
+
+    "units": {
+      "type": "object",
+      "description": "Mapping of ISO‑4217 currency codes to arrays of filings.",
+      "propertyNames": {
+        "pattern": "^[A-Z]{3}$",
+        "description": "ISO‑4217 three‑letter currency code."
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/unitEntry" },
+        "minItems": 1
+      }
+    }
+  },
+
+  "required": [
+    "cik",
+    "taxonomy",
+    "tag",
+    "label",
+    "description",
+    "entityName",
+    "units"
+  ],
+
+  "additionalProperties": false,
+
+  "$defs": {
+    "unitEntry": {
+      "type": "object",
+      "description": "One SEC filing instance for the given tag & currency.",
+      "properties": {
+        "end": {
+          "type": "string",
+          "format": "date",
+          "description": "Period‑end date of the value reported."
+        },
+        "val": {
+          "type": "number",
+          "description": "Numeric value expressed in the surrounding currency."
+        },
+        "accn": {
+          "type": "string",
+          "pattern": "^\\d{10}-\\d{2}-\\d{6}$",
+          "description": "Accession number of the filing (#######-##-######)."
+        },
+        "fy": {
+          "anyOf": [{ "type": "integer", "minimum": 1900 }, { "type": "null" }],
+          "description": "Fiscal year to which the filing applies."
+        },
+        "fp": {
+          "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }],
+          "description": "Fiscal period abbreviation (e.g. Q1, FY) or null."
+        },
+        "form": {
+          "type": "string",
+          "description": "SEC form type (10‑Q, 10‑K, 8‑K, etc.)."
+        },
+        "filed": {
+          "type": "string",
+          "format": "date",
+          "description": "Date on which the form was filed."
+        },
+        "frame": {
+          "type": "string",
+          "description": "XBRL period frame identifier (optional)."
+        }
+      },
+      "required": ["end", "val", "accn", "form", "filed"],
+      "additionalProperties": false
+    }
+  }
+}
+

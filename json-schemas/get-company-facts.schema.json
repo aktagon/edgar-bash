@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SEC XBRL Facts",
+  "type": "object",
+  "additionalProperties": false,
+
+  "properties": {
+    "cik": {
+      "type": "integer"
+    },
+    "entityName": {
+      "type": "string"
+    },
+    "facts": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "properties": {
+        "dei": {
+          "type": "object",
+          "additionalProperties": false,
+
+          "patternProperties": {
+            "^(Entity[A-Za-z0-9]+)$": {
+              "$ref": "#/definitions/fact"
+            }
+          }
+        }
+      },
+      "required": ["dei"]
+    }
+  },
+  "required": ["cik", "entityName", "facts"],
+
+  "definitions": {
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "units": {
+          "type": "object",
+          "additionalProperties": false,
+
+          "patternProperties": {
+            "^[a-zA-Z]+$": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/unitValue"
+              }
+            }
+          }
+        }
+      },
+      "required": ["label", "description", "units"]
+    },
+
+    "unitValue": {
+      "type": "object",
+      "additionalProperties": false,
+
+      "properties": {
+        "end": { "type": "string", "format": "date" },
+        "val": { "type": "number" },
+        "accn": { "type": "string" },
+        "fy": { "type": "integer" },
+        "fp": { "type": "string" },
+        "form": { "type": "string" },
+        "filed": { "type": "string", "format": "date" },
+        "frame": { "type": "string" }
+      },
+      "required": ["end", "val", "accn", "fy", "fp", "form", "filed"]
+    }
+  }
+}

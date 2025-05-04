@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+source "$(dirname "$0")/utils.sh"
 
 # Check if required parameters were provided
 if [ $# -lt 3 ]; then
@@ -8,8 +9,7 @@ if [ $# -lt 3 ]; then
     exit 1
 fi
 
-# Get parameters from command line arguments
-CIK=$(printf "${1#CIK}")
+CIK="$(pad_cik "$1")"
 TAXONOMY="$2"
 CONCEPT="$3"
 
@@ -17,13 +17,13 @@ CONCEPT="$3"
 JSON="json/${TAXONOMY}_${CONCEPT}_CIK${CIK}.json"
 URL="https://data.sec.gov/api/xbrl/companyconcept/CIK${CIK}/${TAXONOMY}/${CONCEPT}.json"
 
+probe_cacheability $URL
+
 echo "1) Downloading XBRL Company Concept JSON for CIK: ${CIK}, Taxonomy: ${TAXONOMY}, Concept: ${CONCEPT}..."
-curl -sSL \
-     -H "User-Agent: Your Name (your.email@example.com)" \
-     "$URL" -o "$JSON"
+fetch_edgar_url $URL
 
 echo "2) Querying the concept data..."
-duckdb edgar.db <<SQL
+run_query <<SQL
 -- Concept metadata
 CREATE TABLE IF NOT EXISTS company_concept AS
 SELECT *
@@ -35,7 +35,7 @@ SQL
 
 echo "3) Dumping schema table..."
 # Export the schema to a file in the schema directory
-duckdb edgar.db <<SQL
+run_query <<SQL
 DESCRIBE company_concept;
 .mode list
 .separator |
