@@ -62,14 +62,14 @@ probe_cacheability() {
 }
 
 ###############################################################################
-# fetch_edgar_url <url> [output_file]
+# fetch_edgar_url <url> <output_file>
 # Downloads a single EDGAR resource whose full URL is supplied by the caller.
 #
 # Accepts:
-#   - Fully‑qualified EDGAR URL (mandatory).
-#   - Optional output filename; defaults to the last path component of <url>.
+#   - Fully-qualified EDGAR URL (mandatory).
+#   - Output filename (now mandatory).
 # Uses:
-#   - EDGAR_UA environment variable for the mandatory SEC‑compliant User‑Agent.
+#   - EDGAR_UA environment variable for the mandatory SEC-compliant User-Agent.
 # Exit status:
 #   0  – success
 #   1  – EDGAR_UA not set
@@ -78,16 +78,16 @@ probe_cacheability() {
 ###############################################################################
 fetch_edgar_url() {
     # ---- Environment sanity ----
-    : "${EDGAR_UA:?Set EDGAR_UA to a valid User‑Agent string}"
+    : "${EDGAR_UA:?Set EDGAR_UA to a valid User-Agent string}"
 
     # ---- Parameter check ----
-    if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
-        echo "Usage: fetch_edgar_url <URL> [output_file]" >&2
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: fetch_edgar_url <URL> <output_file>" >&2
         return 2
     fi
 
     local url="$1"
-    local out="json/${2:-${url##*/}}"  # default: basename of URL
+    local out="$2"
 
     echo "Downloading EDGAR resource: ${url}"
     if ! curl -sSL -H "User-Agent: ${EDGAR_UA}" "${url}" -o "${out}"; then

@@ -17,7 +17,7 @@ UA="Your Name (your.email@example.com)"
 probe_cacheability $URL
 
 echo "1) Downloading XBRL Company Facts JSON for CIK: ${CIK}..."
-fetch_edgar_url $URL
+fetch_edgar_url $URL $JSON
 
 ###############################################################################
 # Query the company facts data with DuckDB

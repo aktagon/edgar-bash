@@ -20,7 +20,7 @@ URL="https://data.sec.gov/api/xbrl/companyconcept/CIK${CIK}/${TAXONOMY}/${CONCEP
 probe_cacheability $URL
 
 echo "1) Downloading XBRL Company Concept JSON for CIK: ${CIK}, Taxonomy: ${TAXONOMY}, Concept: ${CONCEPT}..."
-fetch_edgar_url $URL
+fetch_edgar_url $URL $JSON
 
 echo "2) Querying the concept data..."
 run_query <<SQL

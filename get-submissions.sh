@@ -17,7 +17,7 @@ URL="https://data.sec.gov/submissions/CIK${CIK}.json"
 probe_cacheability $URL
 
 echo "1) Downloading EDGAR Submissions JSON for CIK: ${CIK}..."
-fetch_edgar_url $URL
+fetch_edgar_url $URL $JSON
 
 echo "2) Querying the submissions data..."
 run_query <<SQL

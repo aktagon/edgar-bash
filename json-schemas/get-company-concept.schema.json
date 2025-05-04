@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "XBRL Company Concept, e.g., AccountsPayableCurrentRecord",
+  "type": "object",
+  "properties": {
+    "cik": {
+      "type": "integer"
+    },
+    "taxonomy": {
+      "type": "string"
+    },
+    "tag": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "entityName": {
+      "type": "string"
+    },
+    "units": {
+      "type": "object",
+      "description": "Mapping from unit, e.g. 'USD' currency code or 'shares', to array of period records",
+      "patternProperties": {
+        "^[A-Z]{3}$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "end": {
+                "type": "string",
+                "format": "date"
+              },
+              "val": {
+                "type": "number"
+              },
+              "accn": {
+                "type": "string"
+              },
+              "fy": {
+                "type": ["integer", "null"]
+              },
+              "fp": {
+                "type": ["string", "null"]
+              },
+              "form": {
+                "type": "string"
+              },
+              "filed": {
+                "type": "string",
+                "format": "date"
+              },
+              "frame": {
+                "type": "string"
+              }
+            },
+            "required": ["end", "val", "accn", "fy", "fp", "form", "filed"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "cik",
+    "taxonomy",
+    "tag",
+    "label",
+    "description",
+    "entityName",
+    "units"
+  ],
+  "additionalProperties": false
+}
+

@@ -22,7 +22,7 @@ URL="https://data.sec.gov/api/xbrl/frames/${TAXONOMY}/${TAG}/${UNIT}/${PERIOD}.j
 
 probe_cacheability $URL
 echo "1) Downloading XBRL Frames JSON for Taxonomy: ${TAXONOMY}, Tag: ${TAG}, Unit: ${UNIT}, Period: ${PERIOD}..."
-fetch_edgar_url $URL
+fetch_edgar_url $URL $JSON
 
 echo "2) Querying the frames data..."
 run_query <<SQL
