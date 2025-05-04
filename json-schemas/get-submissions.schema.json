@@ -1,0 +1,361 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "cik": {
+      "type": "string",
+      "description": "The Central Index Key (CIK) identifier"
+    },
+    "entityType": {
+      "type": "string",
+      "description": "The type of entity"
+    },
+    "sic": {
+      "type": "string",
+      "description": "Standard Industrial Classification code"
+    },
+    "sicDescription": {
+      "type": "string",
+      "description": "Description of the SIC code"
+    },
+    "ownerOrg": {
+      "type": "string",
+      "description": "The organization that owns the entity"
+    },
+    "insiderTransactionForOwnerExists": {
+      "type": "integer",
+      "description": "Boolean flag (0 or 1) indicating if insider transactions exist for owner"
+    },
+    "insiderTransactionForIssuerExists": {
+      "type": "integer",
+      "description": "Boolean flag (0 or 1) indicating if insider transactions exist for issuer"
+    },
+    "name": {
+      "type": "string",
+      "description": "Official name of the company"
+    },
+    "tickers": {
+      "type": "array",
+      "description": "Stock ticker symbols",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol"
+          }
+        }
+      }
+    },
+    "exchanges": {
+      "type": "array",
+      "description": "Stock exchanges where the company is listed",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the exchange"
+          }
+        }
+      }
+    },
+    "ein": {
+      "type": "string",
+      "description": "Employer Identification Number"
+    },
+    "lei": {
+      "type": ["string", "null"],
+      "description": "Legal Entity Identifier"
+    },
+    "description": {
+      "type": "string",
+      "description": "Company description"
+    },
+    "website": {
+      "type": "string",
+      "description": "Company website URL"
+    },
+    "investorWebsite": {
+      "type": "string",
+      "description": "Investor relations website URL"
+    },
+    "category": {
+      "type": "string",
+      "description": "Business category classification"
+    },
+    "fiscalYearEnd": {
+      "type": "string",
+      "description": "Month and day of fiscal year end"
+    },
+    "stateOfIncorporation": {
+      "type": "string",
+      "description": "State where company is incorporated"
+    },
+    "stateOfIncorporationDescription": {
+      "type": "string",
+      "description": "Description of incorporation state"
+    },
+    "addresses": {
+      "type": "object",
+      "description": "Company addresses",
+      "properties": {
+        "mailing": {
+          "type": "object",
+          "description": "Mailing address information",
+          "properties": {
+            "street1": {
+              "type": "string",
+              "description": "Street address line 1"
+            },
+            "street2": {
+              "type": ["string", "null"],
+              "description": "Street address line 2"
+            },
+            "city": {
+              "type": "string",
+              "description": "City"
+            },
+            "stateOrCountry": {
+              "type": "string",
+              "description": "State or country code"
+            },
+            "zipCode": {
+              "type": "string",
+              "description": "ZIP or postal code"
+            },
+            "stateOrCountryDescription": {
+              "type": "string",
+              "description": "Description of state or country"
+            },
+            "isForeignLocation": {
+              "type": ["integer", "null"],
+              "description": "Boolean flag (0 or 1) indicating if location is foreign"
+            },
+            "foreignStateTerritory": {
+              "type": ["string", "null"],
+              "description": "Foreign state or territory name"
+            },
+            "country": {
+              "type": ["string", "null"],
+              "description": "Country name"
+            },
+            "countryCode": {
+              "type": ["string", "null"],
+              "description": "Country code"
+            }
+          }
+        },
+        "business": {
+          "type": "object",
+          "description": "Business address information",
+          "properties": {
+            "street1": {
+              "type": "string",
+              "description": "Street address line 1"
+            },
+            "street2": {
+              "type": ["string", "null"],
+              "description": "Street address line 2"
+            },
+            "city": {
+              "type": "string",
+              "description": "City"
+            },
+            "stateOrCountry": {
+              "type": "string",
+              "description": "State or country code"
+            },
+            "zipCode": {
+              "type": "string",
+              "description": "ZIP or postal code"
+            },
+            "stateOrCountryDescription": {
+              "type": "string",
+              "description": "Description of state or country"
+            },
+            "isForeignLocation": {
+              "type": ["integer", "null"],
+              "description": "Boolean flag (0 or 1) indicating if location is foreign"
+            },
+            "foreignStateTerritory": {
+              "type": ["string", "null"],
+              "description": "Foreign state or territory name"
+            },
+            "country": {
+              "type": ["string", "null"],
+              "description": "Country name"
+            },
+            "countryCode": {
+              "type": ["string", "null"],
+              "description": "Country code"
+            }
+          }
+        }
+      }
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "flags": {
+      "type": "string",
+      "description": "Special flags or indicators"
+    },
+    "formerNames": {
+      "type": "array",
+      "description": "Previous company names",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Former company name"
+          },
+          "from": {
+            "type": "string",
+            "description": "Date when name became effective"
+          },
+          "to": {
+            "type": "string",
+            "description": "Date when name was changed"
+          }
+        }
+      }
+    },
+    "filings": {
+      "type": "object",
+      "properties": {
+        "recent": {
+          "type": "object",
+          "properties": {
+            "accessionNumber": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "SEC filing accession numbers"
+            },
+            "filingDate": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Dates when filings were submitted"
+            },
+            "reportDate": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Report dates for filings"
+            },
+            "acceptanceDateTime": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Timestamps when filings were accepted"
+            },
+            "act": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Securities act references"
+            },
+            "form": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "SEC form types"
+            },
+            "fileNumber": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "File numbers"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Item references"
+            },
+            "core_type": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Core document types"
+            },
+            "size": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "File sizes"
+            },
+            "isXBRL": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Flags indicating if filings are in XBRL format"
+            },
+            "isInlineXBRL": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Flags indicating if filings are in inline XBRL format"
+            },
+            "primaryDocument": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Primary document filenames"
+            },
+            "primaryDescription": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Descriptions of primary documents"
+            }
+          }
+        },
+        "files": {
+          "type": "array",
+          "description": "Filing files information",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Filename"
+              },
+              "filingCount": {
+                "type": "integer",
+                "description": "Number of filings"
+              },
+              "filingFrom": {
+                "type": "string",
+                "description": "Start date of filings"
+              },
+              "filingTo": {
+                "type": "string",
+                "description": "End date of filings"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
